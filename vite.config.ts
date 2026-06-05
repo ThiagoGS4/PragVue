@@ -8,4 +8,7 @@ export default defineConfig({
     vue(),
     vuetify(),
   ],
+  define: {
+    'process.env': {}
+  }
 })

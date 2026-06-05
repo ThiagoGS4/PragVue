@@ -23,11 +23,11 @@ export const router = createRouter({
 
 router.beforeEach(async (to) => {
     //const resp = await authService.checkAuth() pedir p samuel rota simples para fazer check de autenticação
-    if (resp === "Not authenticated" && to.meta.requiresAuth) {
+/*     if (resp === "Not authenticated" && to.meta.requiresAuth) {
         return {
             name: "Login",
             query: { redirect: to.fullPath },
         }
         //router.push({name: 'Login'})
-    }
+    } */
 })
