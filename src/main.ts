@@ -12,6 +12,7 @@ import './reset.css'
 import Vue3Toastify from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import { VDateInput } from 'vuetify/labs/VDateInput'
+import VueCookies from 'vue3-cookies'
 
 
 // Vuetify
@@ -33,6 +34,12 @@ const pinia = createPinia()
 
 app
 .use(pinia)
+.use(VueCookies, {
+  expireTimes: '15d',
+  path: '/',
+  secure: false,
+  sameSite: 'Lax',
+})
 .use(Vue3Toastify)
 .use(router)
 .use(vuetify)

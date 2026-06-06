@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <v-responsive class="border rounded" max-height="300">
+  <v-responsive class="border rounded">
     <v-app>
       <v-app-bar title="App bar"></v-app-bar>
 
