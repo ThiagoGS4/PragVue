@@ -12,7 +12,7 @@ const authStore = useAuthStore()
     <v-app>
       <v-app-bar v-if="authStore.isAuthenticated && route?.name !== 'NotFound'" title="App bar"></v-app-bar>
 
-      <v-navigation-drawer>
+      <v-navigation-drawer v-if="authStore.isAuthenticated && route?.name !== 'NotFound'">
         <v-list>
           <v-list-item title="Navigation drawer"></v-list-item>
         </v-list>
