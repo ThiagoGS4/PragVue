@@ -1,11 +1,16 @@
 <script setup lang="ts">
+import { useAuthStore } from './stores/authStore';
+import { useRoute } from 'vuetify/lib/composables/router.mjs';
+
+const route = useRoute()
+const authStore = useAuthStore()
 
 </script>
 
 <template>
   <v-responsive class="border rounded">
     <v-app>
-      <v-app-bar title="App bar"></v-app-bar>
+      <v-app-bar v-if="authStore.isAuthenticated && route?.name !== 'NotFound'" title="App bar"></v-app-bar>
 
       <v-navigation-drawer>
         <v-list>

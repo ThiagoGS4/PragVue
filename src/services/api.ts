@@ -1,11 +1,15 @@
 
 import axios from "axios";
+import { useCookies } from "vue3-cookies";
 
 const apiUrl = import.meta.env.VITE_API_URL
 
 export const axiosInstance = axios.create({
   baseURL: apiUrl,
   timeout: 5000,
-  // todo: fazer header que manda token?? acho q sim
-  //headers: { "X-Custom-Header": "foobar" },
+  headers: { Authorization: `Bearer ${extractToken()}` },
 });
+
+function extractToken(){
+  return useCookies().cookies.get("accessToken")
+}

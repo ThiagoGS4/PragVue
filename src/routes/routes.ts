@@ -1,33 +1,38 @@
 import { createRouter, createWebHistory } from "vue-router"
+import { useAuthStore } from "../stores/authStore"
 
 const routes = [
-    { path: "/", name: "Login", component: () => import("../views/Login.vue") },
+  { path: "/", name: "Login", component: () => import("../views/Login.vue") },
+  { path: "/register", name: "Register", component: () => import("../views/Register.vue") },
+  { path: "/home", name: "Home", component: () => import("../views/Home.vue"), meta: { requiresAuth: true } },
     {
-        path: "/register",
-        name: "Register",
-        component: () => import("../views/Register.vue"),
-    },
-    /* {
-        path: "/rooms",
-        name: "Rooms",
-        component: () => import("../views/Rooms.vue"),
-        meta: { requiresAuth: true },
-    }, */
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: () => import("../views/NotFound.vue"),
+  },
 ]
 
 export const router = createRouter({
-    history: createWebHistory(),
-    routes,
+  history: createWebHistory(),
+  routes,
 })
 
+router.beforeEach((to) => {
+  const authStore = useAuthStore()
+  authStore.hydrate()
 
-router.beforeEach(async (to) => {
-    //const resp = await authService.checkAuth() pedir p samuel rota simples para fazer check de autenticação
-/*     if (resp === "Not authenticated" && to.meta.requiresAuth) {
-        return {
-            name: "Login",
-            query: { redirect: to.fullPath },
-        }
-        //router.push({name: 'Login'})
-    } */
+  const isPublic = to.name === "Login" || to.name === "Register"
+
+  if (authStore.isAuthenticated && isPublic) {
+    return { name: "Home" }
+  }
+
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    return {
+      name: "Login",
+      query: { redirect: to.fullPath },
+    }
+  }
+
+  return true
 })

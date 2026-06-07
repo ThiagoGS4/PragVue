@@ -5,6 +5,12 @@
       @submit.prevent="logar(usuario)"
       @keydown.enter.exact.prevent="logar(usuario)">
         <v-row dense>
+        <v-col cols="12">
+        <v-img src="./prag_login.png" alt="prag logo" />
+        <v-col cols="12">
+          <h2>Login</h2>
+        </v-col>
+        </v-col>
           <v-col cols="12">
             <v-text-field
               label="nome de usuário"
@@ -39,18 +45,18 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import type { IUserLoginInput } from "../types/stores/authStore";
+import type { IUserLoginRegisterInput } from "../types/stores/authStore";
 import { useAuthStore } from "../stores/authStore";
 import { router } from "../routes/routes";
 import { toast } from "vue3-toastify";
 
 const authStore = useAuthStore()
 
-const usuario = ref<IUserLoginInput>({username: '', password: ''});
+const usuario = ref<IUserLoginRegisterInput>({username: '', password: ''});
 
 const exposePassword = ref(false)
 
-async function logar(logando: IUserLoginInput) {
+async function logar(logando: IUserLoginRegisterInput) {
   try {
     await authStore.login(logando);
     toast.success("Login realizado com sucesso!", {
