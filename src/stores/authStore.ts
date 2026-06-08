@@ -6,8 +6,8 @@ import { useCookies } from "vue3-cookies";
 import { computed, ref } from "vue";
 
 export const useAuthStore = defineStore("auth", () => {
-  const accessToken = ref<string | null>(null);
   const { cookies } = useCookies();
+  const accessToken = ref<string | null>(cookies.get("accessToken") ?? null)
 
   async function login(user: IUserLoginRegisterInput): Promise<AxiosResponse> {
     const resp = await axiosInstance.post("/logar", user);
@@ -30,15 +30,23 @@ export const useAuthStore = defineStore("auth", () => {
     accessToken.value = cookies.get("accessToken") || null;
   }
 
-  async function checkAuth(): Promise<AxiosResponse> {
-    const resp = await axiosInstance.get("/me");
+async function checkAuth(): Promise<boolean> {
+  try {
+    await axiosInstance.get("/me")
 
-    return resp;
+    accessToken.value = cookies.get("accessToken") ?? null
+    return !!accessToken.value && !isTokenExpired(accessToken.value)
+  } catch (error) {
+    accessToken.value = null
+    cookies.remove("accessToken")
+    cookies.remove("refreshToken")
+    return false
   }
-  const isAuthenticated = computed(() => {
-    accessToken.value = cookies.get("accessToken");
-    return !!accessToken.value && !isTokenExpired(accessToken.value);
-  });
+}
+
+const isAuthenticated = computed(() => {
+  return !!accessToken.value && !isTokenExpired(accessToken.value)
+})
 
   function parseJwt(token: string) {
     try {

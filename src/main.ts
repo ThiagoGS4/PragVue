@@ -1,4 +1,4 @@
-import { createApp, h, provide } from 'vue';
+import { createApp, h } from 'vue';
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
