@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import type { CalendarEvent } from "vuetify/lib/components/VCalendar/types.mjs";
-import type { CalendarType } from "../types/components/calendar";
-import { getDate, getDay } from "date-fns";
+import { onMounted, ref } from "vue";
+import type { CalendarDaySlotScope, CalendarEvent } from "vuetify/lib/components/VCalendar/types.mjs";
+import type { CalendarType, ICalendarEvents } from "../types/components/calendar";
+import { format, getDate, toDate } from "date-fns";
+import type { IGetSchedulesResponse } from "../types/views/agendamentos";
 
 const calendarType = ref<CalendarType>("month");
 const types = ["month", "week", "day"];
-
 type CalendarInstance = {
   prev: () => void;
   next: () => void;
@@ -22,6 +22,18 @@ function goNext() {
   calendar.value?.next();
 }
 
+const props = defineProps<{
+  events: IGetSchedulesResponse[]
+}>()
+
+console.log('events -> ', props.events); // montar eventos no calendário
+
+
+const emit = defineEmits<{
+  (e: 'dayClicked', date: string): void
+  
+}>()
+
 const upsertDialog = ref(false)
 
 const weekday = ref([0, 1, 2, 3, 4, 5, 6]);
@@ -32,11 +44,27 @@ const weekdays = [
   { title: "Seg - Sex", value: [1, 2, 3, 4, 5] },
 ];
 const value = ref("");
-const schedules = ref<CalendarEvent[]>(); // todo?: tipar isso para input -> ISchedules[]
+const schedules = ref<ICalendarEvents[]>([]);
 
-function handleDayClick(date: string){
+function handleDayClick( date: CalendarDaySlotScope){
+  console.log('date -> ', date);
+  
     upsertDialog.value = true
 }
+
+onMounted(() => {
+  for (const element of props.events) {
+    schedules.value?.push({
+      color: 'primary', // todo fazer um color baseado em data, quanto mais próximo do vencimento muda cor
+      start: toDate(element.scheduled_start),
+      end: toDate(element.scheduled_end),
+      name: element.properties + element.service,
+      timed: true
+    })
+  } 
+  console.log('schedules.value --> ', schedules.value);
+  
+})
 
 </script>
 
@@ -78,23 +106,17 @@ function handleDayClick(date: string){
         :events="schedules"
         :type="calendarType"
         :weekdays="weekday"
-        @click:day="console.log(($event.target as HTMLElement).textContent.slice(-10))"
+        @click:day="(_event, data) => handleDayClick(data)"
       >
-<template #day-label="{ day }" v-if="calendarType === 'month'">
+<template #day-label="{ day, month, year }" v-if="calendarType === 'month'">
   <div
     
     :class="[
       'calendar-day',
-      getDate(new Date()) === day ? 'bg-yellow-darken-4' : 'bg-grey-darken-1'
+      format(new Date(), 'dd/MM/yyyy') === `${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}/${year}` ? 'bg-yellow-darken-4' : 'bg-grey-darken-1'
     ]"
   >
     {{ day }}
-  </div>
-</template>
-
-<template #day="{ date }">
-  <div v-show="false">
-    {{ date }}
   </div>
 </template>
       </v-calendar>

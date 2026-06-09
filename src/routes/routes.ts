@@ -9,7 +9,9 @@ const routes = [
   { path: "/register", name: "Register", component: () => import("../views/Register.vue") },
   { path: "/home", name: "Home", component: () => import("../views/Home.vue"), meta: { requiresAuth: true } },
   { path: "/agendamentos", name: "Agendamentos", component: () => import("../views/Agendamentos.vue"), meta: { requiresAuth: true } },
-    {
+  { path: "/clientes", name: "Clientes", component: () => import("../views/Clientes.vue"), meta: { requiresAuth: true } },
+  { path: "/propriedades", name: "Propriedades", component: () => import("../views/Propriedades.vue"), meta: { requiresAuth: true } },
+  {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
     component: () => import("../views/NotFound.vue"),
