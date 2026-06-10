@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import type { CalendarDaySlotScope, CalendarEvent } from "vuetify/lib/components/VCalendar/types.mjs";
-import type { CalendarType, ICalendarEvents } from "../types/components/calendar";
-import { format, getDate, toDate } from "date-fns";
+import { computed, ref } from "vue";
+import type {
+  CalendarType,
+  ICalendarEvents,
+} from "../types/components/calendar";
+import { differenceInMinutes, format, isValid } from "date-fns";
 import type { IGetSchedulesResponse } from "../types/views/agendamentos";
+import type { CalendarDayBodySlotScope } from "vuetify/lib/components/VCalendar/types.mjs";
 
 const calendarType = ref<CalendarType>("month");
 const types = ["month", "week", "day"];
+
 type CalendarInstance = {
   prev: () => void;
   next: () => void;
@@ -23,18 +27,48 @@ function goNext() {
 }
 
 const props = defineProps<{
-  events: IGetSchedulesResponse[]
-}>()
+  events: IGetSchedulesResponse[];
+}>();
 
-console.log('events -> ', props.events); // montar eventos no calendário
+function getScheduleColor(element: IGetSchedulesResponse) {
+  if (element.completed_at) return "green";
 
+  const end = new Date(element.scheduled_end);
+
+  if (!isValid(end)) return "primary";
+
+  const diff = differenceInMinutes(end, new Date());
+
+  if (diff < 0) return "red";
+  if (diff === 0) return "teal";
+  if (diff <= 3) return "yellow-darken-2";
+  return "blue";
+}
+
+const schedules = computed<ICalendarEvents[]>(() => {
+  return props.events.map((element) => {
+    return {
+      id: element.id,
+      color: getScheduleColor(element),
+      start: new Date(element.scheduled_start),
+      end: new Date(element.scheduled_end),
+      name: `${element.properties.name}, ${element.service.name}`,
+      notes: element.notes,
+      completed: element.completed_at ? new Date(element.completed_at) : null,
+      property: element.properties.id,
+      plague: element.plagues.id,
+      service: element.service.id,
+      status: element.status.id,
+      technician: element.user.id,
+      timed: true,
+    };
+  });
+});
 
 const emit = defineEmits<{
-  (e: 'dayClicked', date: string): void
-  
-}>()
-
-const upsertDialog = ref(false)
+  (e: "dayClicked", date: string): void;
+  (e: "elementClicked", elemData: any): void;
+}>();
 
 const weekday = ref([0, 1, 2, 3, 4, 5, 6]);
 
@@ -44,28 +78,16 @@ const weekdays = [
   { title: "Seg - Sex", value: [1, 2, 3, 4, 5] },
 ];
 const value = ref("");
-const schedules = ref<ICalendarEvents[]>([]);
 
-function handleDayClick( date: CalendarDaySlotScope){
-  console.log('date -> ', date);
-  
-    upsertDialog.value = true
+const dayHeight = ref(600)
+
+function handleDayClick(eventProps: CalendarDayBodySlotScope) {
+  emit("dayClicked", eventProps.date);
 }
 
-onMounted(() => {
-  for (const element of props.events) {
-    schedules.value?.push({
-      color: 'primary', // todo fazer um color baseado em data, quanto mais próximo do vencimento muda cor
-      start: toDate(element.scheduled_start),
-      end: toDate(element.scheduled_end),
-      name: element.properties + element.service,
-      timed: true
-    })
-  } 
-  console.log('schedules.value --> ', schedules.value);
-  
-})
-
+function handleTimeClick(eventProps: CalendarDayBodySlotScope) {
+  emit("dayClicked", eventProps.date);
+}
 </script>
 
 <template>
@@ -97,7 +119,7 @@ onMounted(() => {
         <v-icon>mdi-chevron-right</v-icon>
       </v-btn>
     </v-sheet>
-    <v-sheet height="600">
+    <v-sheet :height="dayHeight">
       <v-calendar
         ref="calendar"
         v-model="value"
@@ -107,18 +129,26 @@ onMounted(() => {
         :type="calendarType"
         :weekdays="weekday"
         @click:day="(_event, data) => handleDayClick(data)"
+        @click:time="(_event, data) => handleTimeClick(data)"
+        @click:event.stop="(_event, data) => emit('elementClicked', data)"
+        @click:more.stop="(_event, data) => dayHeight+=data.index * 100"
       >
-<template #day-label="{ day, month, year }" v-if="calendarType === 'month'">
-  <div
-    
-    :class="[
-      'calendar-day',
-      format(new Date(), 'dd/MM/yyyy') === `${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}/${year}` ? 'bg-yellow-darken-4' : 'bg-grey-darken-1'
-    ]"
-  >
-    {{ day }}
-  </div>
-</template>
+        <template
+          #day-label="{ day, month, year }"
+          v-if="calendarType === 'month'"
+        >
+          <div
+            :class="[
+              'calendar-day',
+              format(new Date(), 'dd/MM/yyyy') ===
+              `${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}/${year}`
+                ? 'bg-yellow-darken-4'
+                : 'bg-grey-darken-1',
+            ]"
+          >
+            {{ day }}
+          </div>
+        </template>
       </v-calendar>
     </v-sheet>
   </div>
@@ -129,6 +159,6 @@ onMounted(() => {
   background-color: orange !important;
 }
 :deep(.v-calendar-daily_head-day) {
-  background-color: #90A4AE !important;
+  background-color: #90a4ae !important;
 }
 </style>

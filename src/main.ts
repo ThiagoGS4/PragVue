@@ -1,3 +1,4 @@
+import 'temporal-polyfill/global';
 import { createApp, h } from 'vue';
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
