@@ -12,7 +12,7 @@ export interface IGetPropertiesResponse{
   google_place_id: string;
   latitude: number;
   longitude: number;
-  property_type: string;
+  property_type: 'PUBLICO' | 'PRIVADO';
   is_active: number;
   created_at: string;
   customer: Customer;

@@ -32,6 +32,9 @@ const emit = defineEmits<{
 
           <template #item.actions="{ item }">
             <div class="actions-cell">
+              <!-- slot opcional para ações extras (ex: botão view) -->
+              <slot name="extra-actions" :item="item" />
+
               <v-tooltip text="Editar" location="top">
                 <template #activator="{ props }">
                   <v-btn
