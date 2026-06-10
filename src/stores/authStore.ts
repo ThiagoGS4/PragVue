@@ -60,6 +60,26 @@ const isAuthenticated = computed(() => {
     }
   }
 
+  // Dados do usuário logado extraídos do token, usados apenas para exibição na interface
+  const userPayload = computed(() => {
+    return accessToken.value ? parseJwt(accessToken.value) : null
+  })
+
+  const username = computed<string>(() => {
+    return userPayload.value?.username ?? userPayload.value?.name ?? "Usuário"
+  })
+
+  const userInitials = computed<string>(() => {
+    const name = username.value?.trim()
+    if (!name) return "U"
+
+    const parts = name.split(/\s+/)
+    const first = parts[0]?.[0] ?? ""
+    const second = parts.length > 1 ? parts[parts.length - 1]?.[0] ?? "" : ""
+
+    return (first + second).toUpperCase()
+  })
+
   function isTokenExpired(token: string) {
     const payload = parseJwt(token);
     if (!payload?.exp) return true;
@@ -73,5 +93,5 @@ const isAuthenticated = computed(() => {
     cookies.remove("accessToken");
     cookies.remove("refreshToken");
   }
-  return { login, registrar, checkAuth, isAuthenticated, hydrate, logout, accessToken };
+  return { login, registrar, checkAuth, isAuthenticated, hydrate, logout, accessToken, username, userInitials };
 });
