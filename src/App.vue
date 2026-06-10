@@ -59,8 +59,8 @@ function logout() {
       />
 
       <div class="brand">
-        <v-avatar class="brand-logo" rounded="lg" size="40">
-          <v-img src="../public/Logo-Altoprag-site-2-scaled.webp" cover></v-img>
+        <v-avatar class="brand-logo bg-white" rounded="lg" size="40">
+          <v-img src="../public/cropped-Icone-Altoprag-colorido-192x192.webp" cover></v-img>
         </v-avatar>
         <div class="brand-text">
           <span class="brand-title">AltoPrag</span>
@@ -98,9 +98,9 @@ function logout() {
       v-model="drawer"
       class="drawer-custom"
     >
-      <div class="drawer-header">
-        <v-avatar rounded="lg" size="44" class="drawer-logo">
-          <v-img src="../public/Logo-Altoprag-site-2-scaled.webp" cover></v-img>
+      <div class="drawer-header border-lg" border="orange-900">
+        <v-avatar rounded="lg" size="44" class="drawer-logo bg-white">
+          <v-img src="../public/cropped-Icone-Altoprag-colorido-192x192.webp" cover></v-img>
         </v-avatar>
         <div class="drawer-header-text">
           <span class="drawer-title">AltoPrag</span>
