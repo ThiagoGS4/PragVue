@@ -21,15 +21,6 @@ const items = [
     icon: "mdi-home-city",
   },
   {
-    title: "Pragas",
-  },
-  {
-    title: "Serviços",
-  },
-  {
-    title: "Status",
-  },
-  {
     title: "AuditLog",
     icon: "mdi-account-tie",
   },
@@ -47,8 +38,10 @@ const isRouteActive = (routeName: string) => route.value?.name === routeName;
     <v-app>
       <v-app-bar
         v-if="authStore.isAuthenticated && route?.name !== 'NotFound'"
-        title="App bar"
-      ></v-app-bar>
+        title="Prag: Gerenciamento de extermínio"
+      >
+      <v-img src="../public/Logo-Altoprag-site-2-scaled.webp"></v-img>
+      </v-app-bar>
 
       <v-navigation-drawer
         v-if="authStore.isAuthenticated && route?.name !== 'NotFound'"
