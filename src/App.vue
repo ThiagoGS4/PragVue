@@ -14,9 +14,11 @@ const items = [
   },
   {
     title: "Clientes",
+    icon: "mdi-human-queue",
   },
   {
     title: "Propriedades",
+    icon: "mdi-home-city",
   },
   {
     title: "Pragas",
@@ -26,6 +28,10 @@ const items = [
   },
   {
     title: "Status",
+  },
+  {
+    title: "AuditLog",
+    icon: "mdi-account-tie",
   },
 ];
 

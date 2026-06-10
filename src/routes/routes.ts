@@ -11,6 +11,7 @@ const routes = [
   { path: "/agendamentos", name: "Agendamentos", component: () => import("../views/Agendamentos.vue"), meta: { requiresAuth: true } },
   { path: "/clientes", name: "Clientes", component: () => import("../views/Clientes.vue"), meta: { requiresAuth: true } },
   { path: "/propriedades", name: "Propriedades", component: () => import("../views/Propriedades.vue"), meta: { requiresAuth: true } },
+  { path: "/auditLog", name: "AuditLog", component: () => import("../views/AuditLog.vue"), meta: { requiresAuth: true } },
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
