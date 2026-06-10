@@ -266,7 +266,7 @@ onMounted(async () => {
           Cancelar
         </v-btn>
         <v-btn
-          color="error"
+          color="red-accent-4"
           variant="elevated"
           @click="deleteSchedule(formData.id!)"
           prepend-icon="mdi-delete"
@@ -486,7 +486,7 @@ onMounted(async () => {
         Atualizar
         </v-btn>
         <v-btn
-          color="primary"
+          color="red-accent-4"
           variant="elevated"
           @click="dialogDelete = true"
           :disabled="formData.completed ? true : false"

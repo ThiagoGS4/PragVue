@@ -1,6 +1,7 @@
 <template>
     <div>
         <DataTable
+        v-if="lista"
         :lista="lista"
         ></DataTable>
     </div>
