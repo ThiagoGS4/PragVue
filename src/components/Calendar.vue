@@ -91,7 +91,7 @@ function handleTimeClick(eventProps: CalendarDayBodySlotScope) {
 </script>
 
 <template>
-  <div>
+  <div border="lg success-darken-1" class="main-content">
     <v-sheet class="d-flex" tile>
       <v-btn class="ma-2" variant="text" icon @click="goPrev()">
         <v-icon>mdi-chevron-left</v-icon>
@@ -143,7 +143,7 @@ function handleTimeClick(eventProps: CalendarDayBodySlotScope) {
               format(new Date(), 'dd/MM/yyyy') ===
               `${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}/${year}`
                 ? 'bg-yellow-darken-4'
-                : 'bg-grey-darken-1',
+                : 'bg-grey-lighten-1',
             ]"
           >
             {{ day }}
@@ -160,5 +160,14 @@ function handleTimeClick(eventProps: CalendarDayBodySlotScope) {
 }
 :deep(.v-calendar-daily_head-day) {
   background-color: #90a4ae !important;
+}
+
+.main-content{
+  border: 4px solid;
+  border-color: #43A047;
+}
+
+:deep(.v-calendar *) {
+  border-color: rgb(90, 90, 90) !important;
 }
 </style>
