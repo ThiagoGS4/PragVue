@@ -12,7 +12,7 @@
                   </v-avatar>
 
                   <h2 class="auth-side-title">AltoPrag</h2>
-                  <p class="auth-side-subtitle">Gerenciamento de Extermínio</p>
+                  <p class="auth-side-subtitle">Controle de Pragas</p>
 
                   <v-divider class="auth-side-divider"></v-divider>
 

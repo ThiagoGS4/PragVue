@@ -88,6 +88,7 @@ function handleDayClick(eventProps: CalendarDayBodySlotScope) {
 function handleTimeClick(eventProps: CalendarDayBodySlotScope) {
   emit("dayClicked", eventProps.date);
 }
+
 </script>
 
 <template>
@@ -122,6 +123,7 @@ function handleTimeClick(eventProps: CalendarDayBodySlotScope) {
     <v-sheet :height="dayHeight">
       <v-calendar
         ref="calendar"
+        locale="pt-BR"
         v-model="value"
         event-overlap-mode="stack"
         :event-overlap-threshold="30"
@@ -163,8 +165,8 @@ function handleTimeClick(eventProps: CalendarDayBodySlotScope) {
 }
 
 .main-content{
-  border: 4px solid;
-  border-color: #43A047;
+  border: 2px solid #43A047;
+  border-radius: 4px;
 }
 
 :deep(.v-calendar *) {

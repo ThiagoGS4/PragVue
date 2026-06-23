@@ -64,7 +64,7 @@ function logout() {
         </v-avatar>
         <div class="brand-text">
           <span class="brand-title">AltoPrag</span>
-          <span class="brand-subtitle">Gerenciamento de Extermínio</span>
+          <span class="brand-subtitle">Controle de Pragas</span>
         </div>
       </div>
 

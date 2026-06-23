@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   lista: any[];
-  headers?: { title: string; key: string; sortable?: boolean }[];
+  headers?: { title: string; key?: string; sortable?: boolean }[];
 }>();
 
 const emit = defineEmits<{
@@ -13,7 +13,7 @@ const emit = defineEmits<{
 <template>
   <v-row dense justify="center" align="center">
     <v-col cols="12" md="10" sm="8">
-      <v-card class="data-table-card elevation-4 rounded-lg overflow-hidden">
+      <v-card class="main-content data-table-card elevation-4 rounded-lg overflow-hidden">
         <v-data-table
           :items="props.lista"
           :headers="props.headers"
@@ -26,7 +26,7 @@ const emit = defineEmits<{
             #[`item.${field}`]="{ item }"
           >
             <div class="cell-scrolled">
-              {{ item[field] }}
+              {{ item[field!] }}
             </div>
           </template>
 
@@ -67,3 +67,10 @@ const emit = defineEmits<{
     </v-col>
   </v-row>
 </template>
+
+<style scoped>
+.main-content{
+  border: 2px solid #43A047;
+  border-radius: 4px;
+}
+</style>

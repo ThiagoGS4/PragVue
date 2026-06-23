@@ -330,6 +330,7 @@ onMounted(async () => {
             <v-text-field v-if="false" v-model="formData.id" />
             <v-col cols="12" md="6">
               <AppTimePicker
+              placeholder="hora de início"
                 v-model="formData.startTime"
                 :z-index="2404"
                 format="HH:mm"
@@ -337,6 +338,7 @@ onMounted(async () => {
             </v-col>
             <v-col cols="12" md="6">
               <AppTimePicker
+                placeholder="hora de término"
                 v-model="formData.endTime"
                 :z-index="2404"
                 format="HH:mm"
@@ -508,7 +510,7 @@ onMounted(async () => {
 }
 
 .dialog-header {
-  background: linear-gradient(135deg, #0f5aa8 0%, #1976d2 100%);
+  background: linear-gradient(135deg, #00814c 0%, #1976d2 100%);
   padding: 1.25rem 1.5rem;
   display: flex;
   justify-content: space-between;

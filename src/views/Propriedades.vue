@@ -32,7 +32,7 @@ const location = ref<LocationResult | null>(null);
 // ─── Cabeçalhos da tabela ──────────────────────────────────────────────────
 const headers = [
   { title: "Apelido", key: "nickname" },
-  { title: "Proprietário", key: "customer.name", value: "customer.name" },
+  { title: "Proprietário", value: "customer.name" },
   { title: "Cidade", key: "city" },
   { title: "Estado", key: "state" },
   { title: "Tipo", key: "property_type" },
