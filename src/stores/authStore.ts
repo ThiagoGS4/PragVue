@@ -14,6 +14,7 @@ export const useAuthStore = defineStore("auth", () => {
 
     cookies.set("refreshToken", resp.data.refreshToken, "15d", "/");
     cookies.set("accessToken", resp.data.accessToken, "15d", "/");
+    cookies.set("accessToken", resp.data.accessToken, "15d", "/");
 
     return resp;
   }
@@ -66,7 +67,7 @@ const isAuthenticated = computed(() => {
   })
 
   const username = computed<string>(() => {
-    return userPayload.value?.username ?? userPayload.value?.name ?? "Usuário"
+    return userPayload.value?.username ?? userPayload.value?.sub ?? "Usuário"
   })
 
   const userInitials = computed<string>(() => {

@@ -428,6 +428,7 @@ onMounted(async () => {
                   label="CEP"
                   variant="outlined"
                   density="comfortable"
+                  maxlength="8"
                 />
               </v-col>
 

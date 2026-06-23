@@ -58,6 +58,7 @@
                   v-model="formData.cpf"
                   label="CPF"
                   variant="outlined"
+                  maxlength="11"
                   density="comfortable"
                 />
               </v-col>

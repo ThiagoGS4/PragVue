@@ -6,7 +6,7 @@ import { usePropertyStore } from "../stores/propertyStore.ts";
 import { usePlagueStore } from "../stores/plagueStore.ts";
 import { useStatusStore } from "../stores/statusStore.ts";
 import { useServiceStore } from "../stores/serviceStore.ts";
-import { useUserStore } from "../stores/useUserStore.ts";
+import { useUserStore } from "../stores/userStore.ts";
 
 import type {
   IFormData,
