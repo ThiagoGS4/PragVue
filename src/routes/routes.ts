@@ -12,6 +12,7 @@ const routes = [
   { path: "/clientes", name: "Clientes", component: () => import("../views/Clientes.vue"), meta: { requiresAuth: true } },
   { path: "/propriedades", name: "Propriedades", component: () => import("../views/Propriedades.vue"), meta: { requiresAuth: true } },
   { path: "/auditLog", name: "AuditLog", component: () => import("../views/AuditLog.vue"), meta: { requiresAuth: true } },
+  { path: "/dadosOpcoes", name: "DadosOpcoes", component: () => import("../views/Dados das Opcoes.vue"), meta: { requiresAuth: true } },
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",

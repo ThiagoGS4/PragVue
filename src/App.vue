@@ -31,6 +31,10 @@ const items = [
     title: "AuditLog",
     icon: "mdi-account-tie",
   },
+  {
+    title: "DadosOpcoes",
+    icon: "mdi-cog",
+  },
 ];
 
 const goToRoute = (routeName: string) => {

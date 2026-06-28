@@ -21,7 +21,7 @@ export const usePropertyStore = defineStore("property", () => {
     }
   
     async function deleteProperty(id: number): Promise<AxiosResponse>{
-        const resp = await axiosInstance.delete(`properties/${id}`)
+        const resp = await axiosInstance.delete(`/properties/${id}`)
         return resp
     }
   return { getProperties, insertProperty, editProperty, deleteProperty };

@@ -227,6 +227,7 @@ async function createProperty() {
       clearFields();
     }
   } catch (error) {
+    console.log('error --> ', error);
     toast.error(
       getErrorMessage(error, "Não foi possível inserir a propriedade..."),
       { autoClose: 4000, position: "top-right", theme: "colored" }

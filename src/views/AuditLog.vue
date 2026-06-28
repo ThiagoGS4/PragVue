@@ -16,9 +16,11 @@ onMounted(async () => {
 const headers = [
   { title: "Operação", key: "operation" },
   { title: "Método", key: "method" },
-  { title: "Executor", key: "created_by" },
+  { title: "Status", key: "status" },
   { title: "Criado em", key: "created_at" },
-  { title: "Status", key: "status" }
+  { title: "Executor", key: "created_by" },
+  { title: "IP", key: "ip" },
+  { title: "Conteúdo", key: "payload" },
 ];
 </script>
 
