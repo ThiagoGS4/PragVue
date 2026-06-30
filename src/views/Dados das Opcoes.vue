@@ -234,6 +234,8 @@ function clearServiceFields() {
   isEditingService.value = false;
 }
 
+//todo: tratar DataIntegrityViolationException
+
 // status
 const statusDialog = ref(false);
 const isEditingStatus = ref(false);
