@@ -7,7 +7,7 @@ import { usePropertyStore } from "../stores/propertyStore";
 import { useCustomerStore } from "../stores/customerStore";
 import type { IGetPropertiesResponse } from "../types/stores/propertyStore";
 import type { IGetCustomersResponse } from "../types/stores/customerStore";
-import type { LocationResult } from "../services/useGeocoding";
+// import type { LocationResult } from "../services/useGeocoding";
 import { getErrorMessage } from "../helpers/axiosHelper";
 
 // ─── Stores ────────────────────────────────────────────────────────────────
@@ -27,12 +27,13 @@ const deleteId = ref<number | null>(null);
 // ─── LocationModal ──────────────────────────────────────────────────────────
 const showLocationModal = ref(false);
 const modalMode = ref<"insert" | "edit" | "view">("insert");
-const location = ref<LocationResult | null>(null);
+// const location = ref<LocationResult | null>(null);
 
 // ─── Cabeçalhos da tabela ──────────────────────────────────────────────────
 const headers = [
   { title: "Apelido", key: "nickname" },
   { title: "Proprietário", value: "customer.name" },
+  { title: "Endereço", key: "formatted_address" },
   { title: "Cidade", key: "city" },
   { title: "Estado", key: "state" },
   { title: "Tipo", key: "property_type" },
@@ -54,9 +55,9 @@ type PropertyForm = {
   state: string;
   country: string;
   formatted_address: string;
-  google_place_id: string;
-  latitude: number | null;
-  longitude: number | null;
+  // google_place_id: string;
+  // latitude: number | null;
+  // longitude: number | null;
   property_type: "PUBLICO" | "PRIVADO";
   is_active: number;
 };
@@ -74,14 +75,26 @@ const emptyForm = (): PropertyForm => ({
   state: "",
   country: "",
   formatted_address: "",
-  google_place_id: "",
-  latitude: null,
-  longitude: null,
+  //google_place_id: "",
+  //latitude: null,
+  //longitude: null,
   property_type: "PUBLICO",
   is_active: 1,
 });
 
 const formData = ref<PropertyForm>(emptyForm());
+
+const formatted_address = computed(() => {
+  const completed = `${formData.value.street ? formData.value.street : ""}
+${formData.value.number ? ", N°" + formData.value.number : ""}
+${formData.value.complement ? ", " + formData.value.complement : ""}
+${formData.value.district ? ", " + formData.value.district : ""} 
+${formData.value.city ? formData.value.city : ""} 
+${formData.value.state ? "/ " + formData.value.state.toUpperCase() : ""} 
+${formData.value.cep.substring(0, 2) + '.' + formData.value.cep.substring(2, 5) + '-' + formData.value.cep.substring(5)}`;
+
+  return completed;
+});
 
 const propertyTypeItems = [
   { label: "Público", value: "PUBLICO" },
@@ -98,29 +111,29 @@ const isSaveDisabled = computed(() => {
   return (
     !formData.value.nickname.trim() ||
     !formData.value.customer_id ||
-    !formData.value.formatted_address.trim()
+    !formatted_address.value.trim()
   );
 });
 
 // ─── Helpers de formulário ─────────────────────────────────────────────────
 function clearFields() {
   formData.value = emptyForm();
-  location.value = null;
+  //  location.value = null;
   dialog.value = false;
   isEditing.value = false;
 }
 
-function syncLocationToForm(loc: LocationResult | null) {
+/* function syncLocationToForm(loc: LocationResult | null) {
   if (!loc) return;
   formData.value.formatted_address = loc.address;
   formData.value.latitude = loc.lat;
   formData.value.longitude = loc.lng;
-}
+} */
 
 // ─── Abertura de diálogos ──────────────────────────────────────────────────
 function openCreateDialog() {
   clearFields();
-  location.value = null;
+  // location.value = null;
   modalMode.value = "insert";
   dialog.value = true;
 }
@@ -141,21 +154,21 @@ function openEditDialog(item: IGetPropertiesResponse) {
     state: item.state,
     country: item.country,
     formatted_address: item.formatted_address,
-    google_place_id: item.google_place_id,
-    latitude: item.latitude,
-    longitude: item.longitude,
+    //google_place_id: item.google_place_id,
+    //latitude: item.latitude,
+    //longitude: item.longitude,
     property_type: item.property_type,
     is_active: item.is_active,
   };
 
-  location.value =
+  /*  location.value =
     item.latitude && item.longitude
       ? {
           lat: item.latitude,
           lng: item.longitude,
           address: item.formatted_address,
         }
-      : null;
+      : null; */
 
   modalMode.value = "edit";
   dialog.value = true;
@@ -171,21 +184,21 @@ function openMapInDialog() {
   showLocationModal.value = true;
 }
 
-function handleLocationSave() {
+/* function handleLocationSave() {
   syncLocationToForm(location.value);
   showLocationModal.value = false;
-}
+} */
 
 // ─── View: abrir mapa somente leitura (fora do form) ──────────────────────
 function openViewDialog(item: IGetPropertiesResponse) {
-  location.value =
+  /*   location.value =
     item.latitude && item.longitude
       ? {
           lat: item.latitude,
           lng: item.longitude,
           address: item.formatted_address,
         }
-      : null;
+      : null; */
   modalMode.value = "view";
   showLocationModal.value = true;
 }
@@ -204,10 +217,10 @@ function buildPayload() {
     city: formData.value.city.trim(),
     state: formData.value.state.trim(),
     country: formData.value.country.trim(),
-    formatted_address: formData.value.formatted_address,
-    google_place_id: formData.value.google_place_id,
-    latitude: formData.value.latitude,
-    longitude: formData.value.longitude,
+    formatted_address: formatted_address.value,
+    // google_place_id: formData.value.google_place_id,
+    // latitude: formData.value.latitude,
+    // longitude: formData.value.longitude,
     property_type: formData.value.property_type,
     is_active: formData.value.is_active,
   };
@@ -227,10 +240,10 @@ async function createProperty() {
       clearFields();
     }
   } catch (error) {
-    console.log('error --> ', error);
+    console.log("error --> ", error);
     toast.error(
       getErrorMessage(error, "Não foi possível inserir a propriedade..."),
-      { autoClose: 4000, position: "top-right", theme: "colored" }
+      { autoClose: 4000, position: "top-right", theme: "colored" },
     );
   }
 }
@@ -251,7 +264,7 @@ async function updateProperty() {
   } catch (error) {
     toast.error(
       getErrorMessage(error, "Não foi possível editar a propriedade..."),
-      { autoClose: 4000, position: "top-right", theme: "colored" }
+      { autoClose: 4000, position: "top-right", theme: "colored" },
     );
   }
 }
@@ -275,7 +288,7 @@ async function confirmDelete() {
   } catch (error) {
     toast.error(
       getErrorMessage(error, "Não foi possível excluir a propriedade..."),
-      { autoClose: 4000, position: "top-right", theme: "colored" }
+      { autoClose: 4000, position: "top-right", theme: "colored" },
     );
   }
 }
@@ -291,13 +304,13 @@ onMounted(async () => {
 
 <template>
   <v-container fluid>
-    <!-- ── LocationModal (view-only fora do form, ou mapa dentro do dialog) ── -->
-    <LocationModal
+    <!-- não usado -->
+    <!--     <LocationModal
       v-model="location"
       :open="showLocationModal"
       :mode="modalMode"
       @close="handleLocationSave"
-    />
+    /> -->
 
     <!-- ── Botão Nova propriedade ────────────────────────────────────────── -->
     <v-row justify="center" class="mb-4">
@@ -320,28 +333,16 @@ onMounted(async () => {
       @openEditDialog="openEditDialog"
       @openDeleteDialog="openDeleteDialog"
     >
-      <!-- slot de actions extra: botão View -->
-      <template #extra-actions="{ item }">
-        <v-tooltip text="Visualizar no mapa" location="top">
-          <template #activator="{ props }">
-            <v-btn
-              v-bind="props"
-              icon="mdi-map-marker-outline"
-              variant="text"
-              size="small"
-              color="secondary"
-              @click="openViewDialog(item)"
-            />
-          </template>
-        </v-tooltip>
-      </template>
+
     </DataTable>
 
     <!-- ── Dialog criar / editar ─────────────────────────────────────────── -->
     <v-dialog v-model="dialog" max-width="760" persistent>
       <v-card>
         <v-card-title class="d-flex justify-space-between align-center">
-          <span>{{ isEditing ? "Editar propriedade" : "Nova propriedade" }}</span>
+          <span>{{
+            isEditing ? "Editar propriedade" : "Nova propriedade"
+          }}</span>
           <v-btn icon="mdi-close" variant="text" @click="clearFields" />
         </v-card-title>
 
@@ -400,26 +401,22 @@ onMounted(async () => {
                   density="comfortable"
                 />
               </v-col>
-
-              <!-- Endereço Google (preenchido pelo mapa) -->
               <v-col cols="12">
                 <v-text-field
-                  v-model="formData.formatted_address"
-                  label="Endereço (Google)"
+                  v-model="formatted_address"
+                  label="Endereço Completo"
+                  disabled
                   variant="outlined"
                   density="comfortable"
                   readonly
-                  :placeholder="
-                    formData.latitude
-                      ? ''
-                      : 'Selecione a localização no mapa'
-                  "
-                  :append-inner-icon="
-                    isEditing ? 'mdi-map-marker-edit' : 'mdi-map-marker-plus'
-                  "
+                  append-inner-icon="mdi-map-marker"
                   @click:append-inner="openMapInDialog"
                   @click="openMapInDialog"
                 />
+                <!-- :placeholder="
+                    formData.latitude ? '' : 'Selecione a localização no mapa'
+                  "
+                -->
               </v-col>
 
               <!-- Dados de endereço (preenchidos manualmente ou vindos do banco) -->

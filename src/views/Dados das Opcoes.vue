@@ -160,6 +160,7 @@
         :lista="serviceList"
         :headers="serviceHeaders"
         :tableHeight="tableHeight"
+        :actionsEnd="true"
         @open-edit-dialog="openEditServiceDialog"
         @open-delete-dialog="openDeleteServiceDialog"
       />
@@ -178,6 +179,7 @@
         :lista="statusList"
         :headers="statusHeaders"
         :tableHeight="tableHeight"
+        :actionsEnd="true"
         @open-edit-dialog="openEditStatusDialog"
         @open-delete-dialog="openDeleteStatusDialog"
       />
@@ -196,6 +198,7 @@
         :lista="plagueList"
         :headers="plagueHeaders"
         :tableHeight="tableHeight"
+        :actionsEnd="true"
         @open-edit-dialog="openEditPlagueDialog"
         @open-delete-dialog="openDeletePlagueDialog"
       />

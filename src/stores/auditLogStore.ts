@@ -8,7 +8,13 @@ export const useAuditLogStore = defineStore("auditLog", () => {
     async function getAuditLog(): Promise<IGetAuditLogResponse[]>{
         const resp = await axiosInstance.get('/auditLog')
 
-        resp.data = resp.data.map((element: IGetAuditLogResponse) => {        
+let sortedAscending = resp.data.sort((a: IGetAuditLogResponse, b: IGetAuditLogResponse) => {
+  const dateA: any = new Date(a.created_at)
+  const dateB: any = new Date(b.created_at)
+  
+  return dateB - dateA;
+});
+        sortedAscending = sortedAscending.map((element: IGetAuditLogResponse) => {        
             const temp = new Date(element.created_at).toISOString()
             return {
                 ...element,
@@ -16,7 +22,7 @@ export const useAuditLogStore = defineStore("auditLog", () => {
             }
             })
         
-        return resp.data
+        return sortedAscending
     }
   return { getAuditLog };
 });

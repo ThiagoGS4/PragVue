@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+/* import { ref } from 'vue'
 import { setOptions, importLibrary } from '@googlemaps/js-api-loader'
 
 const isLoaded = ref(false)
@@ -33,4 +33,4 @@ export function useGoogleMaps() {
   }
 
   return { load, isLoaded, error }
-}
+} */

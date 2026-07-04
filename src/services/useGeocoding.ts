@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+/* import { ref } from 'vue'
 
 export interface LocationResult {
   lat: number
@@ -60,4 +60,4 @@ export function useGeocoding() {
   }
 
   return { init, geocodeAddress, reverseGeocode, isGeocoding, geocodeError }
-}
+} */

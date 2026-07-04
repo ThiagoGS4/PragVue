@@ -4,6 +4,8 @@ import { ref } from "vue";
 const props = defineProps<{
   lista: any[];
   headers?: { title: string; key?: string; sortable?: boolean }[];
+  defaultSortHeader?: string;
+  actionsEnd?: boolean;
   tableHeight?: number;
 }>();
 
@@ -69,6 +71,7 @@ function handleJsonClick(conteudo: string) {
   :items="props.lista"
   :headers="props.headers"
   :show-select="false"
+  :sort-by="props.defaultSortHeader ? [{ key: props.defaultSortHeader, order: 'asc' }] : []"
   class="data-table-custom"
   :height="tableHeight"
 >
@@ -95,7 +98,7 @@ function handleJsonClick(conteudo: string) {
   </template>
 
   <template #item.actions="{ item }">
-    <div class="actions-cell">
+    <div :class="props.actionsEnd ? 'actions-cell' : 'actions-cell-center'">
       <slot name="extra-actions" :item="item" />
 
       <v-tooltip text="Editar" location="top">
@@ -136,6 +139,16 @@ function handleJsonClick(conteudo: string) {
 .main-content {
   border: 2px solid #43a047;
   border-radius: 4px;
+}
+
+.actions-cell{
+  display: flex;
+  justify-content: end;
+}
+
+.actions-cell-center{
+  display: flex;
+  justify-content: left;
 }
 
 .json-formatado:hover{
