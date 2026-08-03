@@ -19,9 +19,9 @@ import VueCookies from 'vue3-cookies'
 // Vuetify
 const vuetify = createVuetify({
   theme: {
-    defaultTheme: 'altoprag',
+    defaultTheme: 'prag',
     themes: {
-      altoprag: {
+      prag: {
         dark: false,
         colors: {
           primary: '#1F8A5D',

@@ -6,7 +6,6 @@
 import { onMounted, ref } from 'vue';
 import { useAuditLogStore } from '../stores/auditLogStore';
 import DataTable from "../components/DataTable.vue";
-import type { IGetAuditLogResponse } from '../types/stores/auditLogStore.ts';
 
 const auditLogStore = useAuditLogStore()
 const auditLogList = ref()

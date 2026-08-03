@@ -11,7 +11,7 @@
                     <v-img src="../public/cropped-Icone-Altoprag-colorido-192x192.webp" alt="AltoPrag" cover></v-img>
                   </v-avatar>
 
-                  <h2 class="auth-side-title">AltoPrag</h2>
+                  <h2 class="auth-side-title">Domus Target</h2>
                   <p class="auth-side-subtitle">Controle de Pragas</p>
 
                   <v-divider class="auth-side-divider"></v-divider>
@@ -39,7 +39,7 @@
                     <v-avatar size="64" rounded="lg" class="mb-2">
                       <v-img src="../public/Logo-Altoprag-site-2-scaled.webp" alt="AltoPrag" cover></v-img>
                     </v-avatar>
-                    <span class="text-h6 font-weight-bold">AltoPrag</span>
+                    <span class="text-h6 font-weight-bold">Domus Target</span>
                   </div>
 
                   <p class="text-overline text-medium-emphasis mb-1">Bem-vindo de volta</p>

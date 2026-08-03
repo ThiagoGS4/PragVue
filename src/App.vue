@@ -67,7 +67,7 @@ function logout() {
           <v-img src="../public/cropped-Icone-Altoprag-colorido-192x192.webp" cover></v-img>
         </v-avatar>
         <div class="brand-text">
-          <span class="brand-title">AltoPrag</span>
+          <span class="brand-title">Domus Target</span>
           <span class="brand-subtitle">Controle de Pragas</span>
         </div>
       </div>
@@ -107,7 +107,7 @@ function logout() {
           <v-img src="../public/cropped-Icone-Altoprag-colorido-192x192.webp" cover></v-img>
         </v-avatar>
         <div class="drawer-header-text">
-          <span class="drawer-title">AltoPrag</span>
+          <span class="drawer-title">Domus Target</span>
           <span class="drawer-subtitle">Painel de controle</span>
         </div>
       </div>
