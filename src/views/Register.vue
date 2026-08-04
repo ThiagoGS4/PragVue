@@ -8,7 +8,7 @@
               <v-col cols="12" md="5" class="auth-side d-none d-md-flex">
                 <div class="auth-side-content">
                   <v-avatar size="84" rounded="lg" class="auth-logo bg-white">
-                    <v-img src="../public/cropped-Icone-Altoprag-colorido-192x192.webp" alt="AltoPrag" cover></v-img>
+                    <v-img src="/cropped-Icone-Altoprag-colorido-192x192.webp" alt="AltoPrag" cover></v-img>
                   </v-avatar>
 
                   <h2 class="auth-side-title">Domus Target</h2>
@@ -37,7 +37,7 @@
                 <div class="auth-form-content">
                   <div class="auth-mobile-brand d-flex d-md-none flex-column align-center mb-6">
                     <v-avatar size="64" rounded="lg" class="mb-2">
-                      <v-img src="../public/Logo-Altoprag-site-2-scaled.webp" alt="AltoPrag" cover></v-img>
+                      <v-img src="/Logo-Altoprag-site-2-scaled.webp" alt="AltoPrag" cover></v-img>
                     </v-avatar>
                     <span class="text-h6 font-weight-bold">Domus Target</span>
                   </div>

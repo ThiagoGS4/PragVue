@@ -64,7 +64,7 @@ function logout() {
 
       <div class="brand">
         <v-avatar class="brand-logo bg-white" rounded="lg" size="40">
-          <v-img src="../public/cropped-Icone-Altoprag-colorido-192x192.webp" cover></v-img>
+          <v-img src="/cropped-Icone-Altoprag-colorido-192x192.webp" cover></v-img>
         </v-avatar>
         <div class="brand-text">
           <span class="brand-title">Domus Target</span>
@@ -104,7 +104,7 @@ function logout() {
     >
       <div class="drawer-header border-lg" border="orange-900">
         <v-avatar rounded="lg" size="44" class="drawer-logo bg-white">
-          <v-img src="../public/cropped-Icone-Altoprag-colorido-192x192.webp" cover></v-img>
+          <v-img src="/cropped-Icone-Altoprag-colorido-192x192.webp" cover></v-img>
         </v-avatar>
         <div class="drawer-header-text">
           <span class="drawer-title">Domus Target</span>
