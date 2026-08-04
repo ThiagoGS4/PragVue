@@ -10,5 +10,10 @@ export default defineConfig({
   ],
   define: {
     'process.env': {}
+  },
+  logLevel: 'info',
+  build: {
+    chunkSizeWarningLimit: 2000,
+    reportCompressedSize: false
   }
 })
