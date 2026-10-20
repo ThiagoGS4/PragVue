@@ -3,7 +3,7 @@ import axios from "axios";
 import { useCookies } from "vue3-cookies";
 import { useAuthStore } from "../stores/authStore";
 
-const apiUrl = import.meta.env.VITE_API_URL
+const apiUrl = import.meta.env.VITE_LOCAL ? "http://localhost:8080" : import.meta.env.VITE_API_URL
 
 const { cookies } = useCookies()
 
