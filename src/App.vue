@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useAuthStore } from "./stores/authStore";
 import { useRoute } from "vuetify/lib/composables/router.mjs";
 import { useRouter } from "vuetify/lib/composables/router.mjs";
@@ -9,6 +9,13 @@ const router = useRouter();
 const authStore = useAuthStore();
 
 const drawer = ref(true);
+
+// tratando embedamento
+const isEmbedded = computed(() => {
+  const hasWebViewBridge = typeof window !== "undefined" && !!(window as any).ReactNativeWebView;
+  const hasEmbedQuery = route.value?.query?.embed === "true";
+  return hasWebViewBridge || hasEmbedQuery;
+});
 
 const items = [
   {
@@ -52,7 +59,7 @@ function logout() {
 <template>
   <v-app>
     <v-app-bar
-      v-if="authStore.isAuthenticated && route?.name !== 'NotFound'"
+      v-if="!isEmbedded && authStore.isAuthenticated && route?.name !== 'NotFound'"
       flat
       color="surface"
       class="app-bar-custom"
@@ -98,7 +105,7 @@ function logout() {
     </v-app-bar>
 
     <v-navigation-drawer
-      v-if="authStore.isAuthenticated && route?.name !== 'NotFound'"
+      v-if="!isEmbedded && authStore.isAuthenticated && route?.name !== 'NotFound'"
       v-model="drawer"
       class="drawer-custom"
     >
@@ -134,7 +141,7 @@ function logout() {
     </v-navigation-drawer>
 
     <v-main class="app-background">
-      <v-container fluid>
+      <v-container fluid :class="{ 'pa-0': isEmbedded }">
         <router-view></router-view>
       </v-container>
     </v-main>
