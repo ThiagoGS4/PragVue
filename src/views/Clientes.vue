@@ -125,7 +125,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { toast } from "vue3-toastify";
 import DataTable from "../components/DataTable.vue";
 import { useCustomerStore } from "../stores/customerStore.ts";
@@ -134,6 +134,11 @@ import type {
   IUpsertCustomer,
 } from "../types/stores/customerStore.ts";
 import { getErrorMessage } from "../helpers/axiosHelper.ts";
+import { handleExpoMessageType } from "../helpers/expoHelper.ts";
+
+const handleExpoMessage = (event: MessageEvent) => {
+  handleExpoMessageType(event, 'REFRESH_CUSTOMERS', loadCustomers)
+}
 
 const customerStore = useCustomerStore();
 
@@ -343,5 +348,14 @@ async function loadCustomers() {
   listCustomers.value = await customerStore.getCustomers();
 }
 
-onMounted(loadCustomers);
+onMounted(() => {
+  loadCustomers()
+  window.addEventListener('message', handleExpoMessage)
+  document.addEventListener('message', handleExpoMessage as EventListener)
+  });
+
+onUnmounted(() => {
+  window.removeEventListener('message', handleExpoMessage)
+  document.removeEventListener('message', handleExpoMessage as EventListener)
+})
 </script>

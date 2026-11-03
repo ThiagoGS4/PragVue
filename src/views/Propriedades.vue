@@ -1,35 +1,34 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { toast } from "vue3-toastify";
 import DataTable from "../components/DataTable.vue";
-import LocationModal from "../components/LocationModal.vue";
 import { usePropertyStore } from "../stores/propertyStore";
 import { useCustomerStore } from "../stores/customerStore";
 import type { IGetPropertiesResponse } from "../types/stores/propertyStore";
 import type { IGetCustomersResponse } from "../types/stores/customerStore";
 // import type { LocationResult } from "../services/useGeocoding";
 import { getErrorMessage } from "../helpers/axiosHelper";
+import { handleExpoMessageType } from "../helpers/expoHelper.ts";
 
-// ─── Stores ────────────────────────────────────────────────────────────────
+const handleExpoMessage = (event: MessageEvent) => {
+  handleExpoMessageType(event, 'REFRESH_PROPERTIES', loadProperties)
+}
+
 const propertyStore = usePropertyStore();
 const customerStore = useCustomerStore();
 
-// ─── Listas ────────────────────────────────────────────────────────────────
 const listProperties = ref<IGetPropertiesResponse[]>([]);
 const listCustomers = ref<IGetCustomersResponse[]>([]);
 
-// ─── Estados de dialog ─────────────────────────────────────────────────────
 const dialog = ref(false);
 const deleteDialog = ref(false);
 const isEditing = ref(false);
 const deleteId = ref<number | null>(null);
 
-// ─── LocationModal ──────────────────────────────────────────────────────────
 const showLocationModal = ref(false);
 const modalMode = ref<"insert" | "edit" | "view">("insert");
 // const location = ref<LocationResult | null>(null);
 
-// ─── Cabeçalhos da tabela ──────────────────────────────────────────────────
 const headers = [
   { title: "Apelido", key: "nickname" },
   { title: "Proprietário", value: "customer.name" },
@@ -41,7 +40,6 @@ const headers = [
   { title: "Ações", key: "actions", sortable: false },
 ];
 
-// ─── Tipo do formulário ────────────────────────────────────────────────────
 type PropertyForm = {
   id?: number | null;
   nickname: string;
@@ -106,7 +104,6 @@ const isActiveItems = [
   { label: "Inativa", value: 0 },
 ];
 
-// ─── Validação ─────────────────────────────────────────────────────────────
 const isSaveDisabled = computed(() => {
   return (
     !formData.value.nickname.trim() ||
@@ -115,7 +112,6 @@ const isSaveDisabled = computed(() => {
   );
 });
 
-// ─── Helpers de formulário ─────────────────────────────────────────────────
 function clearFields() {
   formData.value = emptyForm();
   //  location.value = null;
@@ -130,7 +126,6 @@ function clearFields() {
   formData.value.longitude = loc.lng;
 } */
 
-// ─── Abertura de diálogos ──────────────────────────────────────────────────
 function openCreateDialog() {
   clearFields();
   // location.value = null;
@@ -179,7 +174,6 @@ function openDeleteDialog(id: number) {
   deleteDialog.value = true;
 }
 
-// ─── Abrir mapa dentro do dialog ──────────────────────────────────────────
 function openMapInDialog() {
   showLocationModal.value = true;
 }
@@ -189,21 +183,19 @@ function openMapInDialog() {
   showLocationModal.value = false;
 } */
 
-// ─── View: abrir mapa somente leitura (fora do form) ──────────────────────
-function openViewDialog(item: IGetPropertiesResponse) {
-  /*   location.value =
-    item.latitude && item.longitude
-      ? {
-          lat: item.latitude,
-          lng: item.longitude,
-          address: item.formatted_address,
-        }
-      : null; */
-  modalMode.value = "view";
-  showLocationModal.value = true;
-}
+// function openViewDialog(item: IGetPropertiesResponse) {
+//   /*   location.value =
+//     item.latitude && item.longitude
+//       ? {
+//           lat: item.latitude,
+//           lng: item.longitude,
+//           address: item.formatted_address,
+//         }
+//       : null; */
+//   modalMode.value = "view";
+//   showLocationModal.value = true;
+// }
 
-// ─── CRUD ──────────────────────────────────────────────────────────────────
 function buildPayload() {
   return {
     id: formData.value.id ?? undefined,
@@ -293,13 +285,25 @@ async function confirmDelete() {
   }
 }
 
-// ─── Inicialização ─────────────────────────────────────────────────────────
-onMounted(async () => {
-  [listProperties.value, listCustomers.value] = await Promise.all([
-    propertyStore.getProperties(),
-    customerStore.getCustomers(),
-  ]);
+async function loadProperties(){
+  listProperties.value = await propertyStore.getProperties()
+}
+async function loadCustomers(){
+  listCustomers.value = await customerStore.getCustomers()
+}
+
+onMounted(() => {
+  loadProperties()
+  loadCustomers()
+
+  window.addEventListener('message', handleExpoMessage)
+  document.addEventListener('message', handleExpoMessage as EventListener)
 });
+
+onUnmounted(() => {
+  window.removeEventListener('message', handleExpoMessage)
+  document.removeEventListener('message', handleExpoMessage as EventListener)
+})
 </script>
 
 <template>
@@ -312,7 +316,6 @@ onMounted(async () => {
       @close="handleLocationSave"
     /> -->
 
-    <!-- ── Botão Nova propriedade ────────────────────────────────────────── -->
     <v-row justify="center" class="mb-4">
       <v-col cols="12" md="10" class="d-flex justify-end">
         <v-btn
@@ -325,7 +328,6 @@ onMounted(async () => {
       </v-col>
     </v-row>
 
-    <!-- ── DataTable ─────────────────────────────────────────────────────── -->
     <DataTable
       v-if="listProperties.length"
       :lista="listProperties"
@@ -336,7 +338,6 @@ onMounted(async () => {
 
     </DataTable>
 
-    <!-- ── Dialog criar / editar ─────────────────────────────────────────── -->
     <v-dialog v-model="dialog" max-width="760" persistent>
       <v-card>
         <v-card-title class="d-flex justify-space-between align-center">
@@ -510,7 +511,6 @@ onMounted(async () => {
       </v-card>
     </v-dialog>
 
-    <!-- ── Dialog de confirmação de exclusão ─────────────────────────────── -->
     <v-dialog v-model="deleteDialog" max-width="420">
       <v-card>
         <v-card-title>Excluir propriedade</v-card-title>

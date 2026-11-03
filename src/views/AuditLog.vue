@@ -6,6 +6,7 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import { useAuditLogStore } from '../stores/auditLogStore';
 import DataTable from "../components/DataTable.vue";
+import { handleExpoMessageType } from '../helpers/expoHelper.ts';
 
 const auditLogStore = useAuditLogStore()
 const auditLogList = ref()
@@ -15,12 +16,7 @@ const fetchLogs = async () => {
 }
 
 const handleExpoMessage = (event: MessageEvent) => {
-    try {
-        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data
-        if (data?.type === 'REFRESH_AUDIT_LOG') {
-            fetchLogs()
-        }
-    } catch {}
+  handleExpoMessageType(event, 'REFRESH_AUDIT_LOG', fetchLogs)
 }
 
 onMounted(async () => {
